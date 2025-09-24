@@ -1,26 +1,38 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+vector<vector<char>> k ={{'X','O','O'},{'X','X','O'},{'O','O','X'}};
+char getCell(int i,int j)
+{
+	return k[i][j];
+}
+
 //Display
 void display()
 {
-	for(int i=0;i<size+2;i++)
-	{
-		for(int j=0;j<size;j++)
-		{
-			if(i%2==0)
-			{
-			char current = getCell(i,j);
-			if(current=='X'||current=='O')
-				cout<<' '<<getCell(i,j)<<' ';
-			else
-				cout<<' ';
-			if(j<size-1)
-				cout<<'|';
-			}
-			else
-				cout<<"--- ";
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            char current = getCell(i, j);
+            if (current == 'X' || current == 'O')
+                cout << " " << current << " ";
+            else
+                cout << "   ";
 
-		}
-		cout<<endl;
-	}
+            if (j < size - 1)
+                cout << "|";
+        }
+        cout << endl;
+
+        if (i < size - 1) {
+            for (int j = 0; j < size; j++) {
+                cout << "---";
+                if (j < size - 1)
+                    cout << "+";
+            }
+            cout << endl;
+        }
+    }
 }
 
 /////////////////////////////////
