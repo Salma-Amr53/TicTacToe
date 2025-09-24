@@ -1,13 +1,3 @@
-#include <vector>
-#include <iostream>
-using namespace std;
-
-vector<vector<char>> k ={{'X','O','O'},{'X','X','O'},{'O','O','X'}};
-char getCell(int i,int j)
-{
-	return k[i][j];
-}
-
 //Display
 void display()
 {
