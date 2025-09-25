@@ -1,0 +1,148 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+// ====================== Board Class ======================
+class Board {
+private:
+    vector<vector<char>> grid;
+    int size;
+public:
+    Board(int s = 3) : size(s), grid(s, vector<char>(s, ' ')) {}
+
+    // ---- isValidMove ----
+    bool isValidMove(int row, int col) const {
+        return row >= 0 && row < size && col >= 0 && col < size && grid[row][col] == ' ';
+    }
+
+    // ---- reset ----
+    void reset() {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                grid[i][j] = ' ';
+    }
+
+    bool makeMove(int row, int col, char symbol) {
+        if (isValidMove(row, col)) {
+            grid[row][col] = symbol;
+            return true;
+        }
+        return false;
+    }
+
+    void display() const {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                cout << grid[i][j];
+                if (j < size - 1) cout << " | ";
+            }
+            cout << endl;
+            if (i < size - 1) cout << "---------" << endl;
+        }
+    }
+
+    int getSize() const { return size; }
+
+    char getCell(int r, int c) const { return grid[r][c]; }
+};
+
+// ====================== Player Class ======================
+class Player {
+protected:
+    string name;
+    char symbol;
+public:
+    Player(const string& n, char s) : name(n), symbol(s) {}
+
+    // ---- getName ----
+    string getName() const {
+        return name;
+    }
+
+    // ---- getMove (abstract) ----
+    virtual void getMove(int& row, int& col) = 0;
+
+    char getSymbol() const { return symbol; }
+};
+
+// ====================== AIPlayer Class ======================
+class AIPlayer : public Player {
+public:
+    AIPlayer(const string& n, char s) : Player(n, s) {}
+
+    // ---- getMove ----
+    void getMove(int& row, int& col) override {
+        // dummy AI move
+        row = 0;
+        col = 0;
+    }
+
+    // ---- evaluateBoard ----
+    int evaluateBoard(const Board& board) const {
+        // dummy evaluation
+        return 0;
+    }
+};
+
+// ====================== Game Class ======================
+class Game {
+private:
+    Board board;
+public:
+    Game() : board(3) {}
+
+    // ---- setupPvP ----
+    void setupPvP() {
+        cout << "Setting up Player vs Player..." << endl;
+        // dummy setup
+    }
+
+    // ---- handleAI ----
+    void handleAI(AIPlayer aiPlayer) {
+        int r, c;
+        aiPlayer.getMove(r, c);
+        board.makeMove(r, c, aiPlayer.getSymbol());
+        cout << "AI Move at (" << r << "," << c << ")" << endl;
+    }
+
+    // ---- reset ----
+    void reset() {
+        board.reset();
+        cout << "Game reset!" << endl;
+    }
+
+    Board& getBoard() { return board; }
+};
+
+// ====================== MAIN FUNCTION (Test Cases) ======================
+int main() {
+    Board b(3);
+
+    // Test isValidMove + reset
+    cout << "isValidMove (0,0): " << b.isValidMove(0,0) << endl;
+    b.makeMove(0,0,'X');
+    cout << "After move, isValidMove (0,0): " << b.isValidMove(0,0) << endl;
+    b.display();
+    b.reset();
+    cout << "After reset:" << endl;
+    b.display();
+
+    // Test getName, getMove, evaluateBoard
+    AIPlayer ai("Computer",'O');
+    cout << "AI Name: " << ai.getName() << endl;
+    int r,c;
+    ai.getMove(r,c);
+    cout << "AI Move: (" << r << "," << c << ")" << endl;
+    cout << "Board evaluation: " << ai.evaluateBoard(b) << endl;
+
+    // Test setupPvP, handleAI, reset
+    Game g;
+    g.setupPvP();
+    g.handleAI(ai);
+    g.getBoard().display();
+    g.reset();
+    g.getBoard().display();
+
+    return 0;
+}
